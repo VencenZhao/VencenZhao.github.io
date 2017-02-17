@@ -1,1 +1,93 @@
-Hello World
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>hotspot</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link type="text/css" rel="stylesheet" href="http://220.195.2.246:9092/SensorApp/resource/arcgisjs313/library/3.13/3.13/dijit/themes/claro/claro.css">
+    <link type="text/css" rel="stylesheet" href="http://220.195.2.246:9092/SensorApp/resource/arcgisjs313/library/3.13/3.13/esri/css/esri.css"/>
+    <link type="text/css" rel="stylesheet" href="http://220.195.2.246:9092/SensorApp/resource/arcgisjs313/library/3.13/3.13/dojox/layout/resources/FloatingPane.css">
+    <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="http://220.195.2.246:9092/SensorApp/resource/arcgisjs313/library/3.13/3.13/init.js"></script>
+    <script type="text/javascript" src="./headerjsonapi.js"></script>
+    <style>
+      	body,html{
+          	height: 100%;
+	        width:100%;
+	        margin: 0px;
+	        padding: 0px;
+      	}
+      	#map {
+        	width:100%;
+      	}
+    </style>
+  </head>
+  <body class="claro">
+	    <div id="map" class="map" tabindex="0"></div>
+    <script>
+	    var map;
+	    var mapLayer;
+	    var wgs;
+	    var pointGraphicLayer;
+	    var dataList;
+	    $(function(){
+	      	var h = $(window).height();
+	        $("#map").css({"height": h + 'px'});
+	        initMap();
+	        // initData();
+	    });
+	    function getURLParameter(name) {
+	       return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
+	    }
+		function initMap(){
+	  		require(["dojo/ready",
+		           "dojo/parser",
+		           "dojo/dom",
+		           "esri/symbols/TextSymbol",
+		           "esri/InfoTemplate",
+		           "esri/map",
+		           "esri/layers/GraphicsLayer",
+		           "esri/layers/ArcGISTiledMapServiceLayer",
+		           "esri/geometry/Extent",
+		           "esri/SpatialReference",
+		           "esri/layers/FeatureLayer",
+		           "esri/symbols/SimpleLineSymbol",
+		           "esri/Color",
+		           "esri/symbols/SimpleFillSymbol",
+		           "esri/renderers/UniqueValueRenderer",
+		           "esri/dijit/InfoWindow",
+		           "esri/tasks/QueryTask",
+		           "esri/tasks/query",
+		           "esri/geometry/Polygon",
+		           "esri/layers/ArcGISImageServiceLayer",
+		           "esri/symbols/SimpleFillSymbol"],
+		           function(ready,parser,dom,TextSymbol,InfoTemplate,Map,
+		               GraphicsLayer,ArcGISTiledMapServiceLayer,Extent,
+		               SpatialReference,FeatureLayer,SimpleLineSymbol,
+		               Color,SimpleFillSymbol,UniqueValueRenderer,
+		               InfoWindow,QueryTask,Query,Polygon,ImageServiceLayer,
+		               SimpleFillSymbol){
+		            parser.parse();
+		            map = new Map("map", {
+		              isZoomSlider:true,
+		              logo:false
+		            });
+		            var baseMap =new ArcGISTiledMapServiceLayer("http://cache1.arcgisonline.cn/ArcGIS/rest/services/ChinaOnlineCommunity/MapServer");
+		            map.addLayer(baseMap);
+		            
+		            mapLayer = new FeatureLayer("http://161.202.22.85:6080/arcgis/rest/services/Map/hotspot/MapServer/0");
+		            mapLayer.setOpacity(0.5);
+		            map.addLayer(mapLayer);
+		            pointGraphicLayer = new GraphicsLayer();
+		            map.addLayer(pointGraphicLayer);
+		            var pointExtent = new Extent(12594274.871342653,4626952.308807045,13350695.70325272,5033597.299284162,new SpatialReference(3857));
+		            map.setExtent(pointExtent);
+		            map.resize();
+
+	  		});
+		}
+    </script>
+  </body>
+        
+</html>
